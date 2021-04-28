@@ -63,7 +63,8 @@ This script is explained in detail below.
 
 **1. The First Line: #!/bin/bash and #$ -S /bin/bash**  
 
-These two lines tell SGE to run the script using the BASH command-line interpreter/shell — see below for details [Section 7.]
+These two lines tell SGE to run the script using the BASH command-line interpreter/shell — see below for details [Section 7.]  
+
 **2. Output and Error Messages from the Job**  
   
 Output from the job, once finished, will appear in a file called **hostname-date.sh.o\<job-ID>**, for example, hostname-date.sh.o2590, viz,  
