@@ -262,3 +262,64 @@ The following qsub script is intended be a "real world" example. It includes com
       # ...ensure matlab is on our PATH...
       
       # ...run matlab with input file "myinput.m" --- N.B. "myinput.m" must be in the current-working-directory...
+## SGE  常见命令
+### 1. qsub 提交任务
+    -cwd	 #从当前工作路径运行作业
+    -wd working_dir	#定义工作目录
+    -o  path	定义标准输出文件路径、文件名
+    -e  path	#定义标准错误输出文件路径、文件名
+    -j y[es]|n[o]	#定义作业的标准错误输出是否写入到输出文件中
+    -now y[es]|n[o]	#立即执行作业
+    -a date_time	#作业开始运行时间
+    -b y[es]|n[o]	#指定运行程序是二进制文件还是脚本文件，默认n
+    -m b|e|a|s|n	#定义邮件发送规则。
+     b：作业开始时发送。e：作业结束时发送。a：作业失败时发送 s：作业挂起时发送。n：不发送
+    -M user[@host]	#定义邮件地址
+    -l resource=value	#表明作业运行所需要的资源。-l vf=2g,p=1  #vf内存简写，p线程数简写；
+    #资源可分开写，可写全称，单位可大小写，如-l virtual_free=2G -l num_proc=1。
+    -N job_name	#重命名作业名
+    -q queue_name	#定义作业运行队列
+    -S shell_path	#指定运行Shell环境
+    -P project_name	#定义项目名称，前提是存在该项目
+    -p priority	#定义优先级，-1023 到 1024 , 默认值0
+    -r y[es]|n[o]	#定义作业失败后是否重新运行 -v variable	#定义环境变量
+    -dl date_time	#定义作业到期时间，在作业到期时间之前，作业的优先级会逐步提高，直到管理员指定的最高级别。
+### 2. qstat查看任务状态
+    qstat -u username  查看某个用户的任务
+
+    qstat -u \* 查看所有用户的任务
+
+    qstat -j jobID 查看某个任务的详细信息
+
+    qstat -f 查看用户自己在每个节点的任务情况
+
+    qstat -q all.q -u \* 查看某个队列下所有任务
+
+    qstat -q all.q@node1 -u \* 查看某个队列的某一节点下所有任务
+
+    qdel 删除任务
+    qdel [ -f ]  [ -help ] [-u wc_user_list] [ wc_job_range_list ] [ -t task_id_range ]
+
+    qdel job_id 删除job
+
+    qdel -u usrname 删除用户的所有任务
+
+### 3. 任务的状态
+    qw #等待状态
+    hqw #任务挂起等待中，待依赖的任务完成后执行
+    Eqw #投递任务出错
+    r #任务正在运行
+    s #暂时挂起
+    dr #节点挂了之后，删除任务就会出现这个状态，只有节点重启之后，任务才会消失
+### 4. 挂起/恢复任务
+**qhold命令：挂起qw的任务**
+
+    qhold jobid
+    qhold -u \*
+
+    qrls jobid #恢复
+**qmod命令：挂起running中的任务**
+
+    qmod -sj jobid
+    qmod -usj jobid #恢复
+如果未提交到SGE系统，直接运行的命令用kill -STOP pid 挂起，用kill -CONT pid恢复。
